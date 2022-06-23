@@ -7,6 +7,9 @@ Structured Query Language는 관계형 데이터베이스 관리 시스템(RDBMS
 * RDBMS
 관계형 데이터베이스 관리 시스템(relational database management system)은 관계형 모델을 기반으로 하는 데이터베이스 관리 시스템이다.  
 
-* NoSQL
+* NoSQL  
 NoSQL(non SQL 또는 non relational) 데이터베이스는 전통적인 관계형 데이터베이스 보다 덜 제한적인 일관성 모델을 이용하는 데이터의 저장 및 검색을 위한 시스템이다.  
 
+* Table  
+특정한 종류의 데이터를 구조적으로 묶은 목록이다.  
+e.g. 엑셀에서의 sheet, 표  
