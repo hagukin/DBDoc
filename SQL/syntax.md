@@ -1,14 +1,10 @@
 1. 세미콜론은 안붙여도 되지만 가급적 붙일 것.  
 2. NULL은 없는 것을 표현하는 값이다. Allow null을 해제함으로써 null값을 채우지 못하게 할 수도 있다.  
+3. .sql 파일 첫줄에 USE 키워드를 사용해 사용할 데이터베이스 지정 가능.
 
 ---
-
+### SELECT <항목명> FROM <table명>;
 ```sql
-SELECT <항목명> FROM <table명>;
-
-
-
-
 -- 항목명에 *을 입력하면 모든 항목을 다 불러온다
 SELECT * FROM <table 명>;
 
@@ -45,7 +41,7 @@ SELECT * FROM players WHERE birthCity LIKE 'U__'
 ```
 
 ---  
-
+### ORDER BY, TOP
 ```sql
 -- 년도순으로 정렬 (기본값 ASC 오름차)
 SELECT *
@@ -90,4 +86,86 @@ ORDER BY birthYear DESC
 OFFSET 100 ROWS FETCH NEXT 100 ROWS ONLY;
 ```
 
+---  
+
+### 연산자들
+```sql
+-- 간단한 사칙연산 및 모듈로 연산을 지원한다.
+-- 예제:
+SELECT 50 - 30;
+-- 출력: 
+-- 20이 들어있는 테이블
+
+
+-- 테이블에서 연산한 값을 특정 열에 가져오기
+-- 예시: 한국 나이 80세 이하의 players들의 한국나이를 오름차순으로 정렬해 추출
+-- 잘못된 풀이
+SELECT 2022 - birthYear AS koreanAge
+FROM players
+WHERE birthYear IS NOT NULL AND koreanAge <= 80
+ORDER BY koreanAge;
+-- 틀린 이유: SQL은 영어 문법과 마찬가지의 순서로 실행된다.
+-- 즉 FROM, WHERE, SELECT, ORDER BY 순으로 실행되는데, koreanAge는 SELECT에서 define되었으므로 WHERE에서 에러가 발생한다.
+
+-- 올바른 풀이
+SELECT 2022 - birthYear AS koreanAge
+FROM players
+WHERE birthYear IS NOT NULL AND 2022 - birthYear <= 80
+ORDER BY koreanAge;
+-- 그냥 koreanAge를 한 번 더 하드코딩해서 바꿔주면 된다.
+
+
+-- 기타 유용한 함수들
+SELECT ROUND(3.1415926535, 3);
+SELECT POW(2,3);
+SELECT COS(0);
+
+
+-- 주의: NULL 연산
+SELECT 20 - NULL;
+-- 결과: NULL
+-- 이유: NULL은 존재하지 않는 값이므로 NULL과 연산하면 다 NULL만 나온다.
+
+-- 주의2: 부동소수점 연산
+SELECT 3 / 2;
+-- 결과: 1
+
+SELECT 3.0 / 2;
+-- 결과: 1.5
+```
+
+---  
+
+### 문자열
+```sql
+-- 문자열은 작은따옴표로 표현한다.
+SELECT 'Hello world';
+
+
+-- 한국어의 경우 유니코드를 사용해야 하므로 앞에 N을 붙이자.
+SELECT N'헬로 월드';
+
+
+-- 문자열 합치기
+-- 표준
+SELECT CONCAT('Hello', ' Wor', 'ld');
+-- TSQL
+SELECT 'Hello' + ' World';
+
+
+-- SUBSTR
+SELECT SUBSTRING('20200425', 1, 4);
+-- 결과: 2020
+-- 주의! 시작이 0이 아니라 1이다.
+
+
+-- TRIM
+SELECT TRIM('           HELLO');
+-- 결과: HELLO
+
+
+-- 응용: 성과 이름 합쳐서 fullName이란 값으로 출력하기
+SELECT nameFirst + ' ' + nameLast AS fullName
+FROM players;
+```
 
