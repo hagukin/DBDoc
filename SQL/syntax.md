@@ -169,3 +169,66 @@ SELECT nameFirst + ' ' + nameLast AS fullName
 FROM players;
 ```
 
+---  
+
+### DATETIME (날짜 및 시각 자료형)
+```sql
+-- DATE 연/월/일
+-- TIME 시/분/초
+-- DATETIME 연/월/일/시/분/초
+-- 기타 더 정확성을 높인 자료형들도 존재
+
+
+SELECT CAST('20220709' AS DATETIME)
+-- 결과: 2022-07-09 00:00:00.000
+-- 디폴트는 YYYYMMDD이라는 걸 알 수 있다.
+-- 그외: YYYYMMDD hh:mm:ss.nnn, YYYY-MM-DDThh:mm (T는 알파뱃 T)
+
+
+SELECT ('20220709')
+-- 결과: 2022-07-09 00:00:00.000
+-- 자동 캐스팅도 된다. 단 이 경우에는 해당 column이 DATETIME으로 지정되어있을 때만 가능하다.
+
+
+-- MSSQL 기준 GETDATE로 현재 시각을 가져올 수 있다
+-- 주의: 로컬 시각을 가져온다!
+SELECT GETDATE();
+-- 보다 보편적인 방법은 아래와 같다
+SELECT CURRENT_TIMESTAMP;
+
+
+-- GMT(Greenwich Mean Time)를 가져오려면 GETUTCDATE를 사용하자.
+SELECT GETUTCDATE();
+
+
+-- 날짜 비교는 비교연산자로 할 수 있다
+SELECT *
+FROM datetimeTest
+WHERE time >= '20101220';
+
+
+-- 시간 덧셈뺄셈은 DATEADD로 할 수 있다 (음수 가능)
+SELECT DATEADD(YEAR, 1, '20210101');
+-- 결과: 2022 01 01
+SELECT DATEADD(DAY, -1, '20210101');
+-- 결과: 20211231
+
+
+-- 시간의 차이는 DATEDIFF로 구할 수 있다
+SELECT DATEDIFF(SECOND, '20200203', '20220203');
+-- 결과: 시간차를 초로 계산해준다
+-- 참고: A가 B보다 크면 음수를 반환할 수 도 있다.
+
+
+-- 시각의 일부 부분만 가져오려면 DATEPART를 쓰자. (문자열 파싱해도 되긴 한다)
+SELECT DATEPART(DAY, '20220709');
+-- 결과: 9
+
+-- 그냥 바로 가져올 수도 있다.
+SELECT DAY('20220709);
+--결과: 9
+
+
+-- 참고: 테이블에서의 시각/날짜 출력 포맷도 수정해줄 수 있다
+```
+
